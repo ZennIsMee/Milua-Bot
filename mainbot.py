@@ -14,7 +14,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("YouTube", callback_data="ytmp")],
         [InlineKeyboardButton("TikTok", callback_data="tiktok")],
         [InlineKeyboardButton("Instagram", callback_data="ig")],
-        [InlineKeyboardButton("AI Chat", callback_data="ai")]
+        [InlineKeyboardButton("AI Chat (Comming soon)", callback_data="ai")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Select menu:", reply_markup=reply_markup)
@@ -37,7 +37,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "ig":
         await query.edit_message_text("Type /ig <link> to download Instagram")
     elif data == "ai":
-        await query.edit_message_text("Type /ai <pesan> untuk chat AI (sementara dummy)")
+        await query.edit_message_text("AI chat unavailable")
 
 # ------------------------
 # Dummy AI handler
