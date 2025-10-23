@@ -9,11 +9,11 @@ def ytmp_handler():
 
 async def ytmp_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("Kirim link YouTube setelah /ytmp")
+        await update.message.reply_text("Url invalid")
         return
 
     url = context.args[0]
-    await update.message.reply_text("Sedang download YouTube...")
+    await update.message.reply_text("Downloading...")
 
     try:
         yt = YouTube(url)
@@ -21,6 +21,6 @@ async def ytmp_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         file_path = os.path.join(DOWNLOAD_DIR, f"{yt.title}.mp4")
         stream.download(output_path=DOWNLOAD_DIR, filename=f"{yt.title}.mp4")
         await send_file(update, file_path)
-        await update.message.reply_text("Selesai! (Replied by YTMP)")
+        await update.message.reply_text("Download successful!")
     except Exception as e:
-        await update.message.reply_text(f"Gagal download: {e}")
+        await update.message.reply_text(f"Download failed: {e}")
