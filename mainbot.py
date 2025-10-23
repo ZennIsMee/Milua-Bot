@@ -14,10 +14,10 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("YouTube", callback_data="ytmp")],
         [InlineKeyboardButton("TikTok", callback_data="tiktok")],
         [InlineKeyboardButton("Instagram", callback_data="ig")],
-        [InlineKeyboardButton("AI (dummy)", callback_data="ai")]
+        [InlineKeyboardButton("AI Chat", callback_data="ai")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("Pilih menu:", reply_markup=reply_markup)
+    await update.message.reply_text("Select menu:", reply_markup=reply_markup)
 
 def menu_handler():
     return CommandHandler(["start", "menu"], menu)
@@ -31,19 +31,19 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = query.data
 
     if data == "ytmp":
-        await query.edit_message_text("Ketik /ytmp <link> untuk download YouTube")
+        await query.edit_message_text("Type /ytmp <link> to download YouTube")
     elif data == "tiktok":
-        await query.edit_message_text("Ketik /tiktok <link> untuk download TikTok")
+        await query.edit_message_text("Type /tiktok <link> to download TikTok")
     elif data == "ig":
-        await query.edit_message_text("Ketik /ig <link> untuk download Instagram")
+        await query.edit_message_text("Type /ig <link> to download Instagram")
     elif data == "ai":
-        await query.edit_message_text("Ketik /ai <pesan> untuk chat AI (sementara dummy)")
+        await query.edit_message_text("Type /ai <pesan> untuk chat AI (sementara dummy)")
 
 # ------------------------
 # Dummy AI handler
 # ------------------------
 async def dummy_ai(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("AI masih belum aktif, nanti diisi.")
+    await update.message.reply_text("AI still on update.")
 
 def ai_handler():
     return CommandHandler("ai", dummy_ai)
