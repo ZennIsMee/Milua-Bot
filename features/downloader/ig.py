@@ -8,11 +8,11 @@ def ig_handler():
 
 async def ig_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("Kirim link Instagram setelah /ig")
+        await update.message.reply_text("Link invalid")
         return
 
     url = context.args[0]
-    await update.message.reply_text("Sedang download Instagram...")
+    await update.message.reply_text("Downloading...")
 
     try:
         r = requests.get(url, stream=True)
@@ -23,8 +23,8 @@ async def ig_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 for chunk in r.iter_content(1024):
                     f.write(chunk)
             await send_file(update, file_path)
-            await update.message.reply_text("Selesai! (Replied by IG)")
+            await update.message.reply_text("Download successful!")
         else:
-            await update.message.reply_text(f"Gagal download, status: {r.status_code}")
+            await update.message.reply_text(f"Download failed, status: {r.status_code}")
     except Exception as e:
-        await update.message.reply_text(f"Gagal download: {e}")
+        await update.message.reply_text(f"Download failed: {e}")
