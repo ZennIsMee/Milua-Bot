@@ -14,7 +14,7 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("YouTube", callback_data="ytmp")],
         [InlineKeyboardButton("TikTok", callback_data="tiktok")],
         [InlineKeyboardButton("Instagram", callback_data="ig")],
-        [InlineKeyboardButton("AI Chat (Comming soon)", callback_data="ai")]
+        [InlineKeyboardButton("Nezz??", callback_data="love")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Select menu:", reply_markup=reply_markup)
@@ -37,7 +37,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "ig":
         await query.edit_message_text("Type /ig <Url> to download")
     elif data == "ai":
-        await query.edit_message_text("AI chat unavailable")
+        await query.edit_message_text("Wkwk, aneh si ngebikin bot malah buat begini. btw, apa kabar? kenapa kok di hapus chatnya? sakit tau. oh iya, kamu tau ga kamu aku save apa? <Mapocalyps'> yang artinya <my apocalypse> karena kamu hebat banget bikin hatiku kacau, kaya kiamat. udah sih ini aja. oh iya, makasih masih inget, bahkan buka bot ini.")
+    elif data == "love":
+        await query.edit_message_text("Wah, secret nih, buka bot ini @MiluaDuchy_bot ya, trus type </secretletter>. tapi terserah kamu sih, wkwk. tenang aja, owner bot gabisa liat chat kamu, soalnya belum bikin code buat monitoring🗿 malesss")
 
 # ------------------------
 # Dummy AI handler
