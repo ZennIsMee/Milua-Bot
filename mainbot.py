@@ -31,11 +31,11 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = query.data
 
     if data == "ytmp":
-        await query.edit_message_text("Type /ytmp <link> to download")
+        await query.edit_message_text("Type /ytmp <Url> to download")
     elif data == "tiktok":
-        await query.edit_message_text("Type /tiktok <link> to download")
+        await query.edit_message_text("Type /tiktok <Url> to download")
     elif data == "ig":
-        await query.edit_message_text("Type /ig <link> to download")
+        await query.edit_message_text("Type /ig <Url> to download")
     elif data == "ai":
         await query.edit_message_text("AI chat unavailable")
 
