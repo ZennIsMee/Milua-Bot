@@ -36,11 +36,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("Type /tiktok <Url> to download")
     elif data == "ig":
         await query.edit_message_text("Type /ig <Url> to download")
-    elif data == "ai":
-        await query.edit_message_text("Wkwk, aneh si ngebikin bot malah buat begini. btw, apa kabar? kenapa kok di hapus chatnya? sakit tau. oh iya, kamu tau ga kamu aku save apa? <Mapocalyps'> yang artinya <my apocalypse> karena kamu hebat banget bikin hatiku kacau, kaya kiamat. udah sih ini aja. oh iya, makasih masih inget, bahkan buka bot ini.")
     elif data == "love":
-        await query.edit_message_text("Wah, secret nih, buka bot ini @MiluaDuchy_bot ya, trus type </secretletter>. tapi terserah kamu sih, wkwk. tenang aja, owner bot gabisa liat chat kamu, soalnya belum bikin code buat monitoring🗿 malesss")
-
+        await query.edit_message_text("Wkwk, aneh si ngebikin bot malah buat begini. btw, apa kabar? kenapa kok di hapus chatnya? sakit tau😤. oh iya, kamu tau ga kamu aku save apa? <Mapocalyps'> yang artinya <my apocalypse> karena kamu hebat banget bikin hatiku kacau, kaya kiamat. udah sih ini aja. oh iya, makasih masih inget, bahkan buka bot ini. Alay sih, tapi gpp, gabakal ada yang liat, kamu udah gapeduli aku, gaada subscriber juga di ch ini, yang pasti gabakal ada yang liat pesan ini, fixxx no debat.😂😂")
+    
 # ------------------------
 # Dummy AI handler
 # ------------------------
