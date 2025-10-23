@@ -8,7 +8,7 @@ def ig_handler():
 
 async def ig_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("Link invalid")
+        await update.message.reply_text("Url invalid")
         return
 
     url = context.args[0]
