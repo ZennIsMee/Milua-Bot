@@ -69,6 +69,6 @@ async def user_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
 
 def setup_monitor(app):
-    app.add_handler(MessageHandler(filters.PRIVATE, monitor_private))
+    app.add_handler(MessageHandler(filters.ChatType.PRIVATE, monitor_private))
     app.add_handler(CommandHandler("userlist", user_list))
     
