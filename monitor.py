@@ -4,7 +4,7 @@ import os
 import datetime
 
 # 🔧 Ganti dengan ID kamu
-ADMIN_ID = 6599925642
+ADMIN_ID = 123456789  
 
 USERS_FILE = "users.json"
 LOG_FILE = "monitor_log.txt"
@@ -44,4 +44,39 @@ def setup_monitor(app: Client):
     """Aktifkan fitur monitoring pesan private"""
     @app.on_message(filters.private)
     async def monitor_private(client, message):
-        if m
+        if message.from_user:
+            user_id = message.from_user.id
+            username = message.from_user.username or "None"
+            text = message.text or "<no text>"
+
+            # Simpan user baru
+            is_new = save_user(user_id, username)
+
+            # Simpan log pesan
+            log_message(username, user_id, text)
+
+            # Cetak ke terminal
+            print(f"[MONITOR] {username} ({user_id}): {text}")
+
+            # Kirim notif ke admin kalau user baru
+            if is_new:
+                notif = f"👤 *New user detected!*\n\nUsername: @{username}\nID: `{user_id}`"
+                try:
+                    await client.send_message(ADMIN_ID, notif)
+                except Exception as e:
+                    print(f"[WARN] Gagal kirim notifikasi admin: {e}")
+
+    # 🧾 Command: /userlist (hanya admin)
+    @app.on_message(filters.command("userlist") & filters.user(ADMIN_ID))
+    async def list_users(client, message):
+        users = load_users()
+        if not users:
+            await message.reply("📂 Belum ada user yang tercatat.")
+            return
+
+        text_lines = [f"📋 *Total users:* {len(users)}\n"]
+        for uid, uname in users.items():
+            text_lines.append(f"• @{uname} — `{uid}`")
+
+        text = "\n".join(text_lines)
+        await message.reply(text)
