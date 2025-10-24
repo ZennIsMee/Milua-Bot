@@ -5,3 +5,5 @@ python-dotenv
 pytube
 yt-dlp
 requests
+pyrogram==2.0.106
+tgcrypto
