@@ -4,7 +4,7 @@ import os
 import datetime
 
 # 🔧 Ganti dengan ID kamu
-ADMIN_ID = 123456789  
+ADMIN_ID = 659992564 
 
 USERS_FILE = "users.json"
 LOG_FILE = "monitor_log.txt"
