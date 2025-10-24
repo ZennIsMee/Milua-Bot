@@ -1,16 +1,12 @@
-from pyrogram import Client, filters
-import json
-import os
-import datetime
+from telegram import Update
+from telegram.ext import ContextTypes, MessageHandler, filters, CommandHandler
+import json, os, datetime
 
-# 🔧 Ganti dengan ID kamu
-ADMIN_ID = 659992564 
-
+ADMIN_ID = 6599925642  # ganti dengan ID kamu
 USERS_FILE = "users.json"
 LOG_FILE = "monitor_log.txt"
 
 def save_user(user_id, username):
-    """Simpan user baru ke file users.json"""
     if os.path.exists(USERS_FILE):
         with open(USERS_FILE, "r") as f:
             users = json.load(f)
@@ -22,61 +18,57 @@ def save_user(user_id, username):
         with open(USERS_FILE, "w") as f:
             json.dump(users, f, indent=2)
         print(f"[NEW USER] {username} ({user_id}) added.")
-        return True  # user baru
+        return True
     return False
 
 def log_message(username, user_id, text):
-    """Tulis aktivitas chat ke monitor_log.txt"""
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_line = f"[{now}] {username} ({user_id}): {text}\n"
-
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(log_line)
 
-def load_users():
-    """Ambil semua data user dari users.json"""
+async def monitor_private(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user:
+        user_id = update.effective_user.id
+        username = update.effective_user.username or "None"
+        text = update.message.text if update.message else "<no text>"
+
+        is_new = save_user(user_id, username)
+        log_message(username, user_id, text)
+        print(f"[MONITOR] {username} ({user_id}): {text}")
+
+        if is_new:
+            try:
+                await context.bot.send_message(
+                    ADMIN_ID,
+                    f"👤 *New user detected!*\n\nUsername: @{username}\nID: `{user_id}`",
+                    parse_mode="Markdown",
+                )
+            except Exception as e:
+                print(f"[WARN] Gagal kirim notifikasi admin: {e}")
+
+async def user_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return  # tolak user non-admin
+
     if not os.path.exists(USERS_FILE):
-        return {}
+        await update.message.reply_text("📂 Belum ada user yang tercatat.")
+        return
+
     with open(USERS_FILE, "r") as f:
-        return json.load(f)
+        users = json.load(f)
 
-def setup_monitor(app: Client):
-    """Aktifkan fitur monitoring pesan private"""
-    @app.on_message(filters.private)
-    async def monitor_private(client, message):
-        if message.from_user:
-            user_id = message.from_user.id
-            username = message.from_user.username or "None"
-            text = message.text or "<no text>"
+    if not users:
+        await update.message.reply_text("📂 Belum ada user yang tercatat.")
+        return
 
-            # Simpan user baru
-            is_new = save_user(user_id, username)
+    lines = [f"📋 *Total users:* {len(users)}\n"]
+    for uid, uname in users.items():
+        lines.append(f"• @{uname} — `{uid}`")
 
-            # Simpan log pesan
-            log_message(username, user_id, text)
+    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
 
-            # Cetak ke terminal
-            print(f"[MONITOR] {username} ({user_id}): {text}")
-
-            # Kirim notif ke admin kalau user baru
-            if is_new:
-                notif = f"👤 *New user detected!*\n\nUsername: @{username}\nID: `{user_id}`"
-                try:
-                    await client.send_message(ADMIN_ID, notif)
-                except Exception as e:
-                    print(f"[WARN] Gagal kirim notifikasi admin: {e}")
-
-    # 🧾 Command: /userlist (hanya admin)
-    @app.on_message(filters.command("userlist") & filters.user(ADMIN_ID))
-    async def list_users(client, message):
-        users = load_users()
-        if not users:
-            await message.reply("📂 Belum ada user yang tercatat.")
-            return
-
-        text_lines = [f"📋 *Total users:* {len(users)}\n"]
-        for uid, uname in users.items():
-            text_lines.append(f"• @{uname} — `{uid}`")
-
-        text = "\n".join(text_lines)
-        await message.reply(text)
+def setup_monitor(app):
+    app.add_handler(MessageHandler(filters.PRIVATE, monitor_private))
+    app.add_handler(CommandHandler("userlist", user_list))
+    
