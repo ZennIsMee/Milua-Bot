@@ -68,6 +68,9 @@ app.add_handler(ytmp_handler())                  # /ytmp
 app.add_handler(tiktok_handler())                # /tiktok
 app.add_handler(ig_handler())                    # /ig
 
+from monitor import setup_monitor
+setup_monitor (app)
+
 print("Bot jalan...")
 app.run_polling()
 
